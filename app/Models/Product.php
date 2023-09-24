@@ -17,4 +17,48 @@ class Product extends Model
     protected $fillable = [
         'image', 'title', 'slug', 'category_id', 'user_id', 'description', 'weight', 'price', 'stock', 'discount'
     ];
+
+    /**
+     * category
+     *
+     * @return void
+     */
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    /**
+     * reviews
+     *
+     * @return void
+     */
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    /**
+     * image
+     *
+     * @return Attribute
+     */
+    protected function image(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => asset('/storage/products/' . $value),
+        );
+    }
+        
+    /**
+     * reviewAvgRating
+     *
+     * @return Attribute
+     */
+    public function reviewAvgRating(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => $value ? substr($value, 0, 3) : 0,
+        );
+    } 
 }
